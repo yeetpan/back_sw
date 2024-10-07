@@ -1,25 +1,26 @@
-import express from "express";
-import cors from "cors";
-import cookieParser from "cookieparser";
-const app=express()
+import express from "express"
+import cors from "cors"
+import cookieParser from "cookie-parser"
+
+const app = express()
 
 app.use(cors({
-    origin:process.env.CORS_ORIGIN,                 ///cors docs
-    credentials:true
+    origin: process.env.CORS_ORIGIN,
+    credentials: true
 }))
 
-app.use(express.json({limit:"16kb"}))
-
-// for accepting url requests.
-app.use(express.urlencoded({extended:true,limit:"16kb"}))
-
-
-//whenever anyone wants to store public assets.
+app.use(express.json({limit: "16kb"}))
+app.use(express.urlencoded({extended: true, limit: "16kb"}))
 app.use(express.static("public"))
-
-//cookieParser for safe cookie IO
-
-app.use(cookieParser)
+app.use(cookieParser())
 
 
-export  {app};
+//routes import
+import userRouter from './routes/user.routes.js'
+
+//routes declaration
+app.use("/api/v1/users", userRouter)
+
+// http://localhost:8000/api/v1/users/register
+
+export { app }

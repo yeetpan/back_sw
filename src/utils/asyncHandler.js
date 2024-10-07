@@ -1,7 +1,7 @@
 // basically a wrapper class for writing try/catch and async/await code.
 
 const asyncHandler=(requestHandler)=>{
-    (req,res,next)=>{
+    return (req,res,next)=>{
         Promise.resolve(requestHandler(req,res,next)).catch((err)=>next(err));
     }
 }
