@@ -13,7 +13,7 @@ const registerUser=asyncHandler(
 {
     throw new ApiError (400,"All fields are required")
 }   // check if user already exists : username,email
-    const existedUser=User.findOne({
+    const existedUser= await User.findOne({
         $or:[{username},{email}]
     })
 
@@ -28,11 +28,15 @@ const registerUser=asyncHandler(
    }
    //upload them to cloudinary,avatar.
    const avtr=await uploadonCloudinary(avatarLocalPath)
-   const cvrimg=uploadonCloudinary(coverimgLocalPath)
+   const cvrimg=await uploadonCloudinary(coverimgLocalPath)
+
+   
    if(!avtr){
     throw new ApiError(400,"Avatar file is required")
 
    }
+
+   
    // user object in DB.- db call.
    const user=await User.create({
     fullname,
