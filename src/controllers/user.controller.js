@@ -1,3 +1,4 @@
+import { uploadonCloudinary } from "../utils/cloudinary.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
 import {ApiError} from "../utils/ApiError.js"
 import { User } from "../models/user.model.js"
@@ -57,7 +58,7 @@ const registerUser=asyncHandler(
    
    // user object in DB.- db call.
    const user=await User.create({
-    fullname,
+    fullName:fullname,
     avatar:avtr.url,
     coverImage:cvrimg?.url||"",
     email,
