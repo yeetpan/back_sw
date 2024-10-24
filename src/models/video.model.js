@@ -32,3 +32,5 @@ const videoSchema=new Schema({
         ref:"User"
     }
 },{timestamps:true})
+
+export const Video=mongoose.model("Video",videoSchema)
