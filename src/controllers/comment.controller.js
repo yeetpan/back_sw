@@ -133,15 +133,15 @@ const getVideoComments = asyncHandler(async (req, res) => {
  Comment Fetching Notes:
 
 
-👉 Why do we use $lookup twice?
+ Why do we use $lookup twice?
  - First $lookup fetches video details (to know which video the comment is on).
  - Second $lookup fetches the user details (who wrote the comment).
 
-👉 Why do we use $arrayElemAt inside $project?
+ Why do we use $arrayElemAt inside $project?
  - $lookup returns an array, even if there's only one matching document.
  - $arrayElemAt extracts the first element, so we get a single object instead of an array.
  
-👉 Why do we use pagination with $skip and $limit?
+ Why do we use pagination with $skip and $limit?
  - $skip ignores previous pages of comments ((page - 1) * limit).
  - $limit ensures we don't fetch too many comments at once, improving performance.
  - This prevents overwhelming the database and speeds up response time.
@@ -220,22 +220,6 @@ const addComment = asyncHandler(async (req, res) => {
       new ApiResponse(200, addedComment, videoId, "Comment added successfully")
     );
 
-  /*
- Commenting System Notes:
-
-
-  👉 Why check if the user is logged in?
-     - Comments should only be made by registered users.
-     - Imagine a chat where random anonymous people spam messages. Not fun, right?
-
-  👉 Why check if content is empty?
-     - A comment must have text, otherwise it wouldn't make sense!
-     - It’s like sending a blank text message to a friend—they’d be confused!
-
-  👉 Why store 'owner' and 'video' in the comment?
-     - This allows us to track who made the comment and on which video.
-     - If we didn't store this info, we'd have random comments with no way to know where they belong.
-*/
 });
 
 const updateComment = asyncHandler(async (req, res) => {
@@ -314,13 +298,6 @@ const updateComment = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updatedComment, "Comment successfully updated"));
 
   /*
- Updating Comments Notes:
-
-  
-  👉 Why check if the user is logged in?
-     - Only authenticated users should be able to modify their own comments.
-     - Otherwise, someone could edit another user's comments — big security risk!
-
   👉 Why check for both '_id' and 'owner' when updating?
      - We don’t want users to edit other people’s comments.
      - This ensures that only the original commenter can update their comment.
@@ -366,18 +343,6 @@ const deleteComment = asyncHandler(async (req, res) => {
       new ApiResponse(200, deletedCommentDoc, "Comment deleted successfully")
     );
 
-  /*
-Comment Deletion Process Notes:
-
-👉 Why do we use findOneAndDelete()?
-   - It finds the comment and deletes it in one database query.
-   - Ensures only the owner of the comment can delete it (security feature!).
-
-👉 What happens if the comment doesn't exist or the user isn't the owner?
-   - The operation fails safely without deleting anything.
-   - The user gets a clear error message about what went wrong.
-
-*/
 });
 
 export { getVideoComments, addComment, updateComment, deleteComment };

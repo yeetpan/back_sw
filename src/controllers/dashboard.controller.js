@@ -177,13 +177,12 @@ const getChannelStats = asyncHandler(async (req, res) => {
 
   /*
 
- Querying Channel Stats - Notes:
 
-  👉 Why `Video.find({ owner: userId }).distinct("_id")`?
+   Why `Video.find({ owner: userId }).distinct("_id")`?
      - Finds all videos owned by the user but returns only their _id's.
      - We use this to filter likes (`$in`) instead of querying all videos first.
 
-  👉 Why `$in: await Video.find(...).distinct("_id")`?
+   Why `$in: await Video.find(...).distinct("_id")`?
      - Makes sure we're only counting likes for videos owned by the user.
      
 */
