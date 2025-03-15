@@ -6,6 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
 import fs from "fs"
 import mongoose from "mongoose"
+
 const generateAccessandRefreshTokens=async(userId)=>{
     try {
         const user=await User.findById(userId)
@@ -54,10 +55,7 @@ const registerUser=asyncHandler(
    
    if(!avtr){
     throw new ApiError(400,"Avatar file is required")
-
    }
-
-   
    // user object in DB.- db call.
    const user=await User.create({
     fullName:fullname,
@@ -71,6 +69,7 @@ const registerUser=asyncHandler(
   const createdUser= await User.findById(user._id).select(
     "-password -refreshToken"
   );
+  
     if(!createdUser){
         throw new ApiError(500,"Something went wrong while creating user")
     }
@@ -78,9 +77,7 @@ const registerUser=asyncHandler(
    return res.status(201).json(
     new ApiResponse(200,createdUser,"user Registered Successfully")
 )
-
     }
-
 ) 
 
 const loginUser=asyncHandler(async(req,res)=>{
